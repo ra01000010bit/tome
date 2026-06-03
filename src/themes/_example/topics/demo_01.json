@@ -1,0 +1,66 @@
+{
+  "id": "demo_01",
+  "subjectId": "demo",
+  "name": "D1. Bemutató tétel — csillagok és kövek",
+  "source": "Tome demó tartalom",
+  "unlockCardId": "orion",
+  "questions": [
+    {
+      "id": "demo_01_001",
+      "type": "flashcard",
+      "front": "Hány csillag alkotja Orion jellegzetes „övét\"?",
+      "back": "Három, közel egy vonalban elhelyezkedő fényes csillag.",
+      "explanation": "Ez az egyik legkönnyebben felismerhető mintázat a téli égbolton."
+    },
+    {
+      "id": "demo_01_002",
+      "type": "flashcard",
+      "front": "Mi a Lyra csillagkép legfényesebb csillaga?",
+      "back": "A Vega — a nyári égbolt egyik vezércsillaga."
+    },
+    {
+      "id": "demo_01_003",
+      "type": "multiple_choice",
+      "text": "Melyik csillagkép jellegzetes alakja a „W\" (vagy „M\")?",
+      "options": ["Orion", "Cassiopeia", "Draco", "Lyra"],
+      "correct": 1,
+      "explanation": "A Cassiopeia öt fényes csillaga rajzolja ki a W alakot az északi égbolton."
+    },
+    {
+      "id": "demo_01_004",
+      "type": "multiple_choice",
+      "text": "Melyik drágakő a korund vörös változata?",
+      "options": ["Smaragd", "Rubin", "Zafír", "Ametiszt"],
+      "correct": 1,
+      "explanation": "A rubin krómtól vörös korund; a kék korund a zafír."
+    },
+    {
+      "id": "demo_01_005",
+      "type": "true_false",
+      "statement": "A smaragd a berill zöld színű változata.",
+      "correct": true,
+      "explanation": "A zöld színt króm és vanádium adja a berillnek."
+    },
+    {
+      "id": "demo_01_006",
+      "type": "true_false",
+      "statement": "A rubin keményebb, mint a gyémánt.",
+      "correct": false,
+      "explanation": "A gyémánt a legkeményebb; a korund (rubin) a Mohs-skálán 9, a gyémánt 10."
+    },
+    {
+      "id": "demo_01_007",
+      "type": "cloze",
+      "text": "A {{c1}} csillagkép legfényesebb csillaga a Vega.",
+      "answers": ["Lyra"],
+      "explanation": "A Vega a Lyra (Lant) csillagkép alfa csillaga."
+    },
+    {
+      "id": "demo_01_008",
+      "type": "cloze",
+      "text": "A Nap egy {{c1}}, a Föld pedig egy {{c2}}, amely a Nap körül kering.",
+      "answers": ["csillag", "bolygó"],
+      "explanation": "A Nap saját fénnyel világító csillag; a Föld bolygó."
+    }
+  ]
+}

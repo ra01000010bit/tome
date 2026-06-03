@@ -1,0 +1,509 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Téma-változók ─────────────────────────────────────────────────────────
+   A Tailwind paletta (primary/secondary/base/ink/accent/warm/leaf) és a
+   font-családok ezekből a változókból olvasnak. Témaváltáshoz: a téma
+   `theme.config.js`-ből az `applyTheme()` futáskor felülírja ezeket. Az
+   alábbi default a `themes/_example/theme.config.js`-ből származik —
+   first-paint fallback-ként szolgál (mielőtt a JS lefutna). */
+:root {
+  /* primary — alap lila */
+  --c-primary-50:  250 245 255;
+  --c-primary-100: 243 232 255;
+  --c-primary-200: 233 213 255;
+  --c-primary-300: 216 180 254;
+  --c-primary-400: 192 132 252;
+  --c-primary-500: 168 85 247;
+  --c-primary-600: 147 51 234;
+  --c-primary-700: 126 34 206;
+  --c-primary-800: 107 33 168;
+  --c-primary-900: 88 28 135;
+
+  /* secondary — azúrkék */
+  --c-secondary-50:  240 249 255;
+  --c-secondary-100: 224 242 254;
+  --c-secondary-200: 186 230 253;
+  --c-secondary-300: 125 211 252;
+  --c-secondary-400: 56 189 248;
+  --c-secondary-500: 14 165 233;
+  --c-secondary-600: 2 132 199;
+  --c-secondary-700: 3 105 161;
+  --c-secondary-800: 7 89 133;
+  --c-secondary-900: 12 74 110;
+
+  /* base — krém pergamen */
+  --c-base-50:  253 252 247;
+  --c-base-100: 248 243 230;
+  --c-base-200: 240 230 200;
+  --c-base-300: 230 212 163;
+  --c-base-400: 217 189 117;
+  --c-base-500: 200 165 87;
+
+  /* ink — szöveg, közel-fekete */
+  --c-ink-400: 115 115 115;
+  --c-ink-500: 82 82 82;
+  --c-ink-600: 38 38 38;
+  --c-ink-700: 10 10 10;
+
+  /* accent — Mucha-arany */
+  --c-accent-200: 230 212 163;
+  --c-accent-300: 217 191 124;
+  --c-accent-400: 201 169 97;
+  --c-accent-500: 184 148 90;
+  --c-accent-600: 155 126 58;
+  --c-accent-700: 122 94 34;
+
+  /* warm — korall */
+  --c-warm-200: 240 212 196;
+  --c-warm-300: 232 184 168;
+  --c-warm-400: 217 152 135;
+  --c-warm-500: 196 120 102;
+  --c-warm-600: 168 91 72;
+
+  /* leaf — növényi zöld */
+  --c-leaf-400: 155 184 158;
+  --c-leaf-500: 122 158 126;
+  --c-leaf-600: 90 128 96;
+  --c-leaf-700: 68 98 72;
+
+  /* Font-családok — SF Pro (Apple system) mindenhol */
+  --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro', 'Helvetica Neue', Arial, sans-serif;
+  --font-body:    'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-script:  -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro', 'Helvetica Neue', Arial, sans-serif;
+
+  /* Szecessziós felület/arany szemantikus színek. A komponensek ezekre
+     hivatkoznak (var(--gold) stb.) a hardkódolt hex helyett — így a Doré
+     sötét mód a html.dark felülírásokkal mindent átszínez. Világosban a
+     lenti értékek = az eredeti Mucha-paletta (változatlan kinézet). */
+  --cream:        #faf3e7;
+  --parchment:    #f4ebd8;
+  --page:         #e8d9b8;
+  --page2:        #f0e2c2;
+  --cream2:       #eaddc5;
+  --gold:         #c9a961;
+  --gold-deep:    #9b7e3a;
+  --gold-deepest: #6b4f1a;
+  --gold-locked:  #b8945a;
+  --gold-locked2: #d9bf90;
+  --peach:        #f5d4b5;
+  --ink-brown:    #7a5e2a;
+  --ink-brown2:   #5a4012;
+  --ink-strong:   #2a1810;
+}
+
+/* Reduced-motion: tiszteljük a rendszer beállítást — CSS-animációk, végtelen
+   ismétlések és átmenetek lekapcsolása mozgásérzékeny felhasználóknak. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Sima 3D dőlés-átmenet a kártyákhoz (useTilt hook). */
+.tome-tilt { transition: transform 0.12s ease-out; will-change: transform; }
+
+/* ── Doré sötét mód ─────────────────────────────────────────────────────────
+   A token-alapú UI (kártyák, szöveg, gombok) az inline --c-* változókból
+   sötétül (applyColorMode). Itt csak a CSS-only részeket igazítjuk. A
+   szabályok unlayered-ek → felülírják a @layer base/components értékeket.
+   Doré-hangulat: meleg szénfekete háttér, halk arany metszet-textúra. */
+html.dark {
+  /* Semleges, hűvös szénfekete felületek (nem "beégetett barna"), csont
+     szöveg, kiemelt arany — illuminált-kódex hangulat sötét alapon. */
+  --cream:        #26262a;
+  --parchment:    #1d1d20;
+  --page:         #131315;
+  --page2:        #1b1b1e;
+  --cream2:       #26262a;
+  --gold:         #d4b870;
+  --gold-deep:    #c2a25e;
+  --gold-deepest: #9c8044;
+  --gold-locked:  #5f5a4a;
+  --gold-locked2: #46443a;
+  --peach:        #cdaf78;
+  --ink-brown:    #e0d2a6;
+  --ink-brown2:   #d4c699;
+  --ink-strong:   #14110a;
+  /* Vésett/metszet római cím-betű (Cinzel) sötétben — klasszikus Doré érzet. */
+  --font-display: 'Cinzel', Georgia, 'Times New Roman', serif;
+}
+/* Címek sötétben: finom arany fény-halo (dramai Doré megvilágítás). */
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark .tome-title {
+  text-shadow: 0 0 1px rgba(212,184,112,0.25), 0 2px 16px rgba(180,150,80,0.22);
+}
+/* Sötét mód háttere: meleg szénfekete fátyol-gradiens (külső kép nélkül).
+   Egy téma adhat saját háttérképet a body::before felülírásával. */
+html.dark body::before {
+  background-color: #0d0d0f;
+  background-image:
+    radial-gradient(ellipse at 50% 38%, transparent 32%, rgba(0,0,0,0.55) 100%),
+    linear-gradient(to bottom, rgba(13,13,15,0.92) 0%, rgba(13,13,15,0.72) 55%, rgba(13,13,15,0.50) 100%);
+  background-size: cover, cover;
+  background-position: center, center top;
+  background-repeat: no-repeat, no-repeat;
+}
+
+/* Világos módban a fenti @layer base body::before (gradiens + finom SVG-motívum)
+   adja a hátteret — nincs külső kép-függőség. */
+/* Finom arany szecessziós keret világos módban — a tartalom "Mucha-keretben". */
+html:not(.dark) body::after {
+  content: '';
+  position: fixed;
+  inset: 7px;
+  z-index: 30;
+  pointer-events: none;
+  border: 1.5px solid rgba(155,126,58,0.42);
+  border-radius: 7px;
+  box-shadow:
+    inset 0 0 0 3px rgba(255,253,247,0.30),
+    inset 0 0 28px rgba(155,126,58,0.06);
+}
+/* Kártyák sötéten: halk belső fény-perem helyett mélyebb árnyék */
+html.dark .card,
+html.dark .card-clean,
+html.dark .card-plain,
+html.dark .card-medal {
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.05),
+    0 6px 16px -4px rgba(0,0,0,0.6);
+}
+/* Féláttetsző kártyák → átdereng a Doré háttér. A szöveg végig teljes
+   erősségű (olvasható). Hover / billentyű-fókusz / nyomás → tömör.
+   A kvíz-felületek !bg-base-50-nel ettől függetlenül tömörek maradnak. */
+html.dark .card,
+html.dark .card-clean,
+html.dark .card-plain {
+  background-color: rgb(var(--c-base-50) / 0.66);
+  /* Finom kettős vonalkázás (metszet-textúra) — alig látható, nem zavarja a szöveget. */
+  background-image:
+    repeating-linear-gradient(45deg, rgba(232,224,202,0.022) 0 1px, transparent 1px 6px),
+    repeating-linear-gradient(-45deg, rgba(232,224,202,0.022) 0 1px, transparent 1px 6px);
+  transition: background-color 0.25s ease;
+}
+html.dark .card:hover,        html.dark .card:focus-within,        html.dark .card:active,
+html.dark .card-clean:hover,  html.dark .card-clean:focus-within,  html.dark .card-clean:active,
+html.dark .card-plain:hover,  html.dark .card-plain:focus-within,  html.dark .card-plain:active,
+html.dark .card.tome-focus,    html.dark .card-clean.tome-focus,     html.dark .card-plain.tome-focus {
+  background-color: rgb(var(--c-base-50) / 0.97);
+}
+
+/* ── Alphonse Mucha / szecessziós alapok ─────────────────────────────────── */
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+  }
+  body {
+    @apply text-ink-700 font-body antialiased;
+    font-family: var(--font-body);
+  }
+  /* Pseudo-element for background to prevent mobile paint performance issues (instead of background-attachment: fixed) */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-color: #efe2c2;
+    background-image:
+      radial-gradient(ellipse at 50% 50%, rgba(245,232,200,0) 0%, rgba(120,82,40,0.12) 90%),
+      radial-gradient(at 0% 0%,    rgba(125,211,252,0.18) 0px, transparent 38%),
+      radial-gradient(at 100% 0%,  rgba(125,211,252,0.14) 0px, transparent 38%),
+      radial-gradient(at 0% 100%,  rgba(155,126,58,0.10)  0px, transparent 42%),
+      radial-gradient(at 100% 100%,rgba(155,126,58,0.10)  0px, transparent 42%),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'><g fill='%239b7e3a' fill-opacity='0.07'><path d='M 60 60 Q 50 50 60 40 Q 70 50 60 60 Z'/><path d='M 60 60 Q 70 70 60 80 Q 50 70 60 60 Z'/><path d='M 60 60 Q 50 70 40 60 Q 50 50 60 60 Z'/><path d='M 60 60 Q 70 50 80 60 Q 70 70 60 60 Z'/><circle cx='60' cy='60' r='2.2' fill='%239b7e3a' fill-opacity='0.18'/></g><g fill='%230369a1' fill-opacity='0.05'><circle cx='180' cy='180' r='1.8'/><path d='M 180 165 Q 175 160 180 155 Q 185 160 180 165 Z'/><path d='M 180 195 Q 175 200 180 205 Q 185 200 180 195 Z'/><path d='M 165 180 Q 160 175 155 180 Q 160 185 165 180 Z'/><path d='M 195 180 Q 200 175 205 180 Q 200 185 195 180 Z'/></g></svg>");
+    background-size: auto, auto, auto, auto, auto, 240px 240px;
+    pointer-events: none;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    @apply text-ink-800; /* Darker than ink-700 for headings */
+    letter-spacing: 0.04em; /* Slightly tighter for elegance */
+  }
+  h1 { font-weight: 700; }
+  h2 { font-weight: 600; }
+}
+
+/* ── Komponens-osztályok ─────────────────────────────────────────────────── */
+
+@layer components {
+  /* Pergamen kártya kettős arany kerettel + finom azúr aura — díszes Mucha */
+  .card {
+    @apply bg-base-50/95 backdrop-blur rounded-sm p-4 relative transition-all duration-300;
+    border: 1px solid rgb(var(--c-accent-400));
+    box-shadow: 
+      inset 0 0 0 1px rgba(255, 255, 255, 0.5), /* Inner light rim */
+      0 4px 12px -2px rgba(122, 94, 34, 0.08),  /* Soft warm shadow */
+      0 2px 4px -2px rgba(122, 94, 34, 0.04);
+  }
+  .card:hover {
+    box-shadow: 
+      inset 0 0 0 1px rgba(255, 255, 255, 0.6),
+      0 8px 20px -4px rgba(122, 94, 34, 0.12),
+      0 4px 8px -4px rgba(122, 94, 34, 0.06);
+    transform: translateY(-1px);
+  }
+
+  /* Letisztult border arany + azúr highlight a tetején (Mucha-jewelry érzés) */
+  .card-clean {
+    @apply bg-base-50/90 backdrop-blur rounded-md p-4 relative transition-all duration-300;
+    border: 1px solid rgb(var(--c-accent-300));
+    box-shadow:
+      0 2px 6px -1px rgba(14, 80, 120, 0.06); /* Extremely subtle azure tint */
+  }
+  .card-clean:hover {
+    border-color: rgb(var(--c-secondary-400) / 0.8);
+    box-shadow:
+      0 6px 16px -2px rgba(14, 80, 120, 0.12);
+    transform: translateY(-1px);
+  }
+
+  .card-plain {
+    @apply bg-base-50/90 rounded-sm p-4 border border-accent-300/60 backdrop-blur;
+  }
+
+  /* Mucha-medál kártya: azúr-arany kombi keret, kicsit ünnepélyesebb */
+  .card-medal {
+    @apply bg-base-50/95 backdrop-blur rounded-sm p-4 relative transition-all duration-300;
+    border: 1px solid rgb(var(--c-secondary-400));
+    box-shadow:
+      inset 0 0 0 2px rgb(var(--c-base-50)),
+      inset 0 0 0 3px rgb(var(--c-accent-400)),
+      0 6px 16px -4px rgba(14, 80, 120, 0.15);
+  }
+
+  /* Heading-szakasz feliratkozási stílus (Tudás-térkép, kis szekció-cím) */
+  .section-rule {
+    @apply flex items-center gap-2 mb-2;
+  }
+  .section-rule h2 {
+    font-family: var(--font-display);
+    @apply text-xs font-bold uppercase text-secondary-700;
+    letter-spacing: 0.22em;
+  }
+  .section-rule::before,
+  .section-rule::after {
+    content: '';
+    @apply flex-1 h-px;
+    background: linear-gradient(to right, transparent, rgb(var(--c-secondary-400)), transparent);
+  }
+
+  .tome-oval-frame {
+    /* Container: a kép-keret oválja. Inline style-ban kapja:
+       --ova-stroke (border-color), --ova-inner (inset stroke), --ova-glow. */
+    position: relative;
+    border-radius: 50% / 45%;
+    border: 1.5px solid var(--ova-stroke, #9b7e3a);
+    background: radial-gradient(ellipse at 50% 35%, var(--ova-glow, #d4af6a55) 0%, transparent 70%);
+    overflow: hidden;
+  }
+  .tome-oval-frame::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 0.5px solid var(--ova-inner, #c9a961);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  .tome-oval-frame > img,
+  .tome-oval-frame > svg {
+    position: absolute;
+    inset: 8%;
+    width: 84%;
+    height: 84%;
+    object-fit: contain;
+    /* A forrás-PNG-knél előfordul szürke háttér (nem teljesen átlátszó) —
+       a multiply blend-mode beolvasztja a parchment alapba, így nem
+       virít ki a krém-bézs ovális keretből. */
+    mix-blend-mode: multiply;
+  }
+
+  .tome-nameplate {
+    /* HS-style banner. Inline: --np-bg, --np-bt (border-top), --np-bb, --np-color. */
+    position: relative;
+    background: var(--np-bg, linear-gradient(180deg, #f5d4b5, #c9a961, #9b7e3a));
+    border-top: 1px solid var(--np-bt, #c9a961);
+    border-bottom: 1px solid var(--np-bb, #6b4f1a);
+    color: var(--np-color, #2a1810);
+    padding: 6px 14px 7px;
+    text-align: center;
+    font-family: var(--font-body);
+    font-style: italic;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -1px 0 rgba(0,0,0,0.25);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .tome-nameplate::before,
+  .tome-nameplate::after {
+    content: '✦';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.55em;
+    opacity: 0.7;
+  }
+  .tome-nameplate::before { left: 5px; }
+  .tome-nameplate::after  { right: 5px; }
+
+  .tome-bg-anchor {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgba(155, 126, 58, 0.04) 5deg,
+      transparent 10deg
+    ), radial-gradient(circle at 50% 50%, rgba(155, 126, 58, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+  }
+
+  .tome-paper-noise {
+    /* SVG feTurbulence base64-elve, 6%-os opacity → matt papír benyomás. */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.42  0 0 0 0 0.32  0 0 0 0 0.18  0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    background-repeat: repeat;
+  }
+
+  .tome-card-lift {
+    transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 360ms cubic-bezier(0.16, 1, 0.3, 1),
+                filter    360ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @media (hover: hover) {
+    .tome-card-lift:hover {
+      transform: translateY(-4px);
+      filter: brightness(1.04);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tome-card-lift { transition: none; }
+    .tome-card-lift:hover { transform: none; filter: none; }
+  }
+
+  @keyframes tome-tap-pulse {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.04); }
+    100% { transform: scale(1); }
+  }
+  .tome-tap-pulse {
+    animation: tome-tap-pulse 220ms ease-out;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tome-tap-pulse { animation: none; }
+  }
+
+  @keyframes tome-spine-flash {
+    0%   { opacity: 0; }
+    50%  { opacity: 0.7; }
+    100% { opacity: 0; }
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm px-5 py-2.5 font-semibold transition-all active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed;
+    font-family: var(--font-display);
+    letter-spacing: 0.08em;
+    font-size: 0.92rem;
+  }
+  .btn-primary {
+    @apply btn text-base-50;
+    background: linear-gradient(135deg, rgb(var(--c-accent-500)), rgb(var(--c-accent-600)));
+    box-shadow: 0 0 0 1px rgb(var(--c-accent-700)), 0 2px 8px -2px rgba(122, 94, 34, 0.4);
+  }
+  .btn-primary:hover {
+    background: linear-gradient(135deg, rgb(var(--c-accent-600)), rgb(var(--c-accent-700)));
+  }
+  .btn-secondary {
+    @apply btn bg-base-50 text-ink-600 hover:bg-base-100;
+    box-shadow: 0 0 0 1px rgb(var(--c-accent-400));
+  }
+  .btn-ghost {
+    @apply btn text-ink-500 hover:bg-base-100/60;
+    letter-spacing: 0.04em;
+  }
+
+  /* Mucha cím-stílus — fekete-szürke alap, finom azúr aura */
+  .tome-title {
+    font-family: var(--font-display);
+    @apply text-ink-700 font-bold;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.7),
+      0 0 14px rgb(var(--c-secondary-200) / 0.55),
+      0 0 22px rgb(var(--c-secondary-100) / 0.4);
+  }
+  .tome-script {
+    font-family: var(--font-script);
+    @apply text-secondary-700;
+    line-height: 0.9;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+
+  /* Diszkrét csillag-szegély a heading-eken */
+  .ornate-rule {
+    @apply flex items-center gap-3 text-accent-500;
+  }
+  .ornate-rule::before,
+  .ornate-rule::after {
+    content: '';
+    @apply flex-1 h-px;
+    background: linear-gradient(to right, transparent, rgb(var(--c-accent-500)), transparent);
+  }
+
+  /* Flashcard akció-gombok — Mucha: display betű, ritkított, arany keret.
+     A három class közös DNS-e: rounded-sm, font-display, uppercase, arany ring. */
+  .btn-flash-reveal {
+    @apply w-full inline-flex items-center justify-center gap-2 rounded-sm font-bold text-base-50 transition-all active:scale-95;
+    font-family: var(--font-display);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    min-height: 60px;
+    font-size: 0.95rem;
+    background: linear-gradient(135deg, rgb(var(--c-accent-500)), rgb(var(--c-accent-600)));
+    box-shadow: 0 0 0 1px rgb(var(--c-accent-700)), 0 2px 10px -3px rgba(122, 94, 34, 0.45);
+  }
+  .btn-flash-reveal:hover {
+    background: linear-gradient(135deg, rgb(var(--c-accent-600)), rgb(var(--c-accent-700)));
+  }
+  .btn-flash-grade {
+    @apply flex-1 inline-flex items-center justify-center rounded-sm font-bold transition-all active:scale-95;
+    font-family: var(--font-display);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    min-height: 60px;
+    font-size: 0.92rem;
+    box-shadow: 0 0 0 1px rgb(var(--c-accent-400) / 0.5);
+  }
+  .btn-flash-grade:hover {
+    box-shadow: 0 0 0 1px rgb(var(--c-accent-500) / 0.8), 0 2px 6px -2px rgba(122, 94, 34, 0.22);
+  }
+  .btn-flash-nav {
+    @apply flex-1 inline-flex items-center justify-center gap-1.5 rounded-sm font-semibold text-ink-600 bg-base-50 hover:bg-base-100 transition-all active:scale-95;
+    font-family: var(--font-display);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    min-height: 48px;
+    font-size: 0.85rem;
+    box-shadow: 0 0 0 1px rgb(var(--c-accent-400) / 0.55);
+  }
+  .btn-flash-nav:disabled {
+    @apply opacity-40 cursor-not-allowed;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+/* iPhone-on a home-indicator alatt is olvasható maradjon a bottom-nav */
+.safe-bottom { padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0.5rem)); }
