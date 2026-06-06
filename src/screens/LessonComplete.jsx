@@ -52,7 +52,7 @@ export default function LessonComplete() {
           onClick={() => setRevealOpen(true)}
           className="btn-secondary w-full"
         >
-          Mutasd újra a lovat
+          Mutasd újra a kártyát
         </button>
       )}
 

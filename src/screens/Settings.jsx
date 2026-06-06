@@ -97,7 +97,7 @@ export default function Settings() {
       <div className="card border-rose-200 bg-rose-50/40">
         <h3 className="text-2xl text-rose-700">Veszélyzóna</h3>
         <p className="text-sm text-ink-600 mb-3">
-          Minden haladás, feloldott állat és kérdésállapot törlődik.
+          Minden haladás, feloldott kártya és kérdésállapot törlődik.
         </p>
         {!confirmReset ? (
           <button

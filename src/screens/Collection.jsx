@@ -271,7 +271,7 @@ function CategoryPage({ cat, pageIndex, discovered, cards, unlocked, onSelect, r
               <h2 className="tome-title text-2xl sm:text-3xl">— — —</h2>
               <p className="text-sm text-ink-600 italic mt-1 leading-snug px-1"
                  style={{ fontFamily: 'var(--font-body)' }}>
-                Egy újabb világ vár felfedezésre. Teljesíts leckéket, hátha innen érkezik az új ló.
+                Egy újabb világ vár felfedezésre. Teljesíts leckéket, hátha innen érkezik az új kártya.
               </p>
             </>
           )}
@@ -288,7 +288,7 @@ function CategoryPage({ cat, pageIndex, discovered, cards, unlocked, onSelect, r
           {cards.length === 0 ? (
             <div className="col-span-2 text-center text-sm text-ink-500 py-6">
               <FlowerMotif size={24} color={cat.accent} />
-              <p className="mt-2">Ez az oldal még üres — keress lovakat ehhez a kategóriához!</p>
+              <p className="mt-2">Ez az oldal még üres — gyűjts kártyákat ehhez a kategóriához!</p>
             </div>
           ) : (
             orderedCards.map((a) => (

@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
-import { findCard } from '../theme.js';
+import { findCard, themeConfig } from '../theme.js';
 import { CornerOrnaments, OrnamentDivider } from './Ornament.jsx';
 import { useTilt } from '../hooks/useTilt.js';
 
@@ -48,7 +48,7 @@ export default function GachaReveal({ result, onClose, isStarter = false }) {
     <motion.div
       role="dialog"
       aria-modal="true"
-      aria-label={isStarter ? 'Üdvözlő ajándék' : `Új ló: ${card.name}`}
+      aria-label={isStarter ? 'Üdvözlő ajándék' : `Új kártya: ${card.name}`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -117,7 +117,7 @@ export default function GachaReveal({ result, onClose, isStarter = false }) {
             onClick={onClose}
             className="absolute bottom-12 btn-primary px-8 py-3"
           >
-            BEENGEDEM A KARÁMBA
+            HOZZÁADÁS A GYŰJTEMÉNYHEZ
           </motion.button>
         )}
       </AnimatePresence>
@@ -160,7 +160,7 @@ function CardBack() {
           opacity="0.9"
           letterSpacing="6"
         >
-          L
+          {(themeConfig?.splash?.monogram || themeConfig?.brand?.short || 'T').charAt(0)}
         </text>
         <rect x="50" y="320" width="220" height="120" stroke="#c9a961" strokeWidth="1" fill="none" />
         <g transform="translate(160, 380)" stroke="#c9a961" fill="#9b7e3a" strokeWidth="0.6">
@@ -187,7 +187,7 @@ function CardBack() {
 }
 
 function CardFront({ card, levelData, isStarter }) {
-  const headline = isStarter ? 'Üdvözlő ajándék' : 'Új ló a karámban';
+  const headline = isStarter ? 'Üdvözlő ajándék' : 'Új kártya';
   return (
     <div
       className="w-full h-full rounded-sm relative bg-base-50 overflow-hidden"
